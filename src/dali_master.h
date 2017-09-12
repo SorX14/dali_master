@@ -14,9 +14,10 @@
 #define ON_C                0b00000101 // Alias for RECALLMAXLEVEL_C
 #define RECALLMAXLEVEL_C    0b00000101 
 #define RECALLMINLEVEL_C    0b00000110
-#define OFF_C               0b00000000 // OFF
+#define OFF_C               0x00 // OFF
+#define QUERY_MAX_LEVEL_C   0xA1 // Ask for maximum output level
 
-#define BLANK_C             0b00000000 // Easier to type
+#define BLANK_C             0x00 // Easier to type
 
 #define BROADCAST_C         0xFF
 #define BROADCAST_DP        0xFE
