@@ -1,6 +1,30 @@
 # dali_master
 
-A Particle library for dali_master
+A Particle library for dali_master. Turns your Particle Photon into a DALI Master with the LED Warrior 14 modules available here:
+
+http://shop.codemercs.com/en/led-warrior14-01-module (Powered via 5v) 
+http://shop.codemercs.com/en/led-warrior14-02-module (Powered from DALI bus)
+
+## About DALI
+
+DALI (Digital Addressable Lighting Interface) is a method of controlling lighting fixtures via a 2 wire bus. The DALI interface communicates via Manchester encoding.
+
+Up to 64 individual devices can be communicated with one master. Scenes and groups can be defined to group together multiple fixtures. More complicated builds use light and PIR sensors to turn lights on and off.
+
+References: https://en.wikipedia.org/wiki/Digital_Addressable_Lighting_Interface
+
+## This project
+
+The code here is based largely around this original library: https://create.arduino.cc/projecthub/NabiyevTR/simple-dali-controller-506e44 which uses custom circuitry to interface with the DALI bus. I had no interest in designing my own circuit so I purchased a ready-made solution which uses I2C and galvanicly isolates the MCU from the DALI bus.
+
+I've managed to reliably address 2 light features on the bus using the RANDOMISE command which was my main goal.
+
+While the DALI reference is available as a paid for PDF, I used various resources online to understand the commissioning process.
+
+References:
+- https://create.arduino.cc/projecthub/NabiyevTR/simple-dali-controller-506e44
+- http://www.rayzig.com/manual/rayzig.html?DALIaddresssettingexplained.html
+- https://elmicro.com/files/manuals/drm004.pdf
 
 ## Welcome to your library!
 
