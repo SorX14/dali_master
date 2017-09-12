@@ -84,6 +84,12 @@ public:
    */
   void flashDevice(byte deviceId);
 
+  /**
+   * Print the current status in checkbox form
+   */
+  void explainStatus(byte status);
+
+
 private:
   uint8_t address;
 

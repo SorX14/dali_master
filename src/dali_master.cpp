@@ -16,6 +16,7 @@ void Dali_master::begin(uint8_t _address)
 {
   	address = _address;
 	Wire.begin();
+
 	clearStatusRegister();
     transmitCommand(TERMINATE_C, BLANK_C);
     transmitCommand(RESET_C, BLANK_C);
@@ -58,7 +59,6 @@ byte Dali_master::transmitCommand(byte cmd1, byte cmd2)
 	Wire.write(cmd1);
 	Wire.write(cmd2);
 	Wire.endTransmission();
-	delay(10);
 
 	// Wait until the command has been sent
 	b = getStatus();
@@ -75,9 +75,9 @@ byte Dali_master::transmitCommand(byte cmd1, byte cmd2)
 	// If we have an error (frameerror or overrun)
 	if (bitRead(b, FRAMEERROR_S) == 1 || bitRead(b, OVERRUN_S) == 1) {
 		if (bitRead(b, FRAMEERROR_S) == 1) {
-
+			Serial.println("FRAMEERROR");
 		} else {
-
+			Serial.println("OVERRUN");
 		}
 	}
 
@@ -113,11 +113,69 @@ void Dali_master::flashDevice(byte deviceId)
     }
 }
 
+void Dali_master::explainStatus(byte status) 
+{
+    Serial.print("BUSERR [");
+    if (bitRead(status, BUSERROR_S) == 1) {
+        Serial.print("x");
+    } else {
+        Serial.print(" ");
+    }
+    Serial.print("] BUSY [");
+    if (bitRead(status, BUSY_S) == 1) {
+        Serial.print("x");
+    } else {
+        Serial.print(" ");
+    }
+    Serial.print("] OVERRUN [");
+    if (bitRead(status, OVERRUN_S) == 1) {
+        Serial.print("x");
+    } else {
+        Serial.print(" ");
+    }
+    Serial.print("] FRAMEERROR [");
+    if (bitRead(status, FRAMEERROR_S) == 1) {
+        Serial.print("x");
+    } else {
+        Serial.print(" ");
+    }
+    Serial.print("] VALIDREPLY [");
+    if (bitRead(status, VALIDREPLY_S) == 1) {
+        Serial.print("x");
+    } else {
+        Serial.print(" ");
+    }
+    Serial.print("] TIMEOUT [");
+    if (bitRead(status, REPLYTIMEFRAME_S) == 1) {
+        Serial.print("x");
+    } else {
+        Serial.print(" ");
+    }
+    Serial.print("] REPLY 2[");
+    if (bitRead(status, REPLY2_S) == 1) {
+        Serial.print("x");
+    } else {
+        Serial.print(" ");
+    }
+    Serial.print("] REPLY 1[");
+    if (bitRead(status, REPLY1_S) == 1) {
+        Serial.print("x");
+    } else {
+        Serial.print(" ");
+    }
+    Serial.print("]");
+}
+
 // PRIVATE METHODS
 void Dali_master::clearStatusRegister()
 {
 	uint8_t a, b;
-	getCommandRegister(a, b);
+	byte s = getStatus();
+
+	while (s != 0x00) {
+		getCommandRegister(a, b);
+		s = getStatus();
+	}
 }
 
 bool Dali_master::getStatusRaw()
@@ -125,7 +183,6 @@ bool Dali_master::getStatusRaw()
 	Wire.beginTransmission(address);
 	Wire.write(0x00);
 	Wire.endTransmission();
-	delay(10);
 
 	Wire.requestFrom(address, 1);
 
@@ -137,7 +194,6 @@ bool Dali_master::getCommandRegisterRaw()
 	Wire.beginTransmission(address);
 	Wire.write(0x01);
 	Wire.endTransmission();
-	delay(10);
 
 	Wire.requestFrom(address, 2);
 
