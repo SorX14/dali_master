@@ -9,7 +9,7 @@ A Particle library for dali_master. Turns your Particle Photon into a DALI Maste
 
 DALI (Digital Addressable Lighting Interface) is a method of controlling lighting fixtures via a 2 wire bus. The DALI interface communicates via Manchester encoding.
 
-Up to 64 individual devices can be communicated with one master. Scenes and groups can be defined to group together multiple fixtures. More complicated builds use light and PIR sensors to turn lights on and off.
+Up to 64 individual devices can be communicated with. Scenes and groups can be defined to group together multiple fixtures. More complicated builds use light and PIR sensors to turn lights on and off.
 
 References: 
 - https://en.wikipedia.org/wiki/Digital_Addressable_Lighting_Interface
