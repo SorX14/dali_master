@@ -74,6 +74,11 @@ public:
    */
   void getCommandRegister(uint8_t &byte1, uint8_t &byte2);
 
+  /**
+   * Split 24 bit long into three bytes
+   */
+  void splitAdd(long input, uint8_t &highbyte, uint8_t &middlebyte, uint8_t &lowbyte);
+
 private:
   uint8_t address;
 
@@ -90,10 +95,5 @@ private:
   /**
    * Get command register. Returns true when valid data is available
    */
-  bool getCommandRegisterRaw();
-
-  /**
-   * Split 24 bit long into three bytes
-   */
-  void splitAdd(long input, uint8_t &highbyte, uint8_t &middlebyte, uint8_t &lowbyte);
+  bool getCommandRegisterRaw();  
 };
