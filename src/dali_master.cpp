@@ -101,7 +101,7 @@ byte Dali_master::getStatus()
 	return Wire.read();
 }
 
-void flashDevice(byte deviceId) 
+void Dali_master::flashDevice(byte deviceId) 
 {
     const uint8_t delayTime = 50;
     
