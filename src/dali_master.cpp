@@ -6,16 +6,17 @@
 /**
  * Constructor.
  */
-Dali_master::Dali_master(uint8_t _address)
+Dali_master::Dali_master()
 {
-  address = _address;
+  
 }
 
 /**
  * Example method.
  */
-void Dali_master::begin()
+void Dali_master::begin(uint8_t _address)
 {
+  	address = _address;
 	Wire.begin();
 	clearStatusRegister();
     transmitCommand(TERMINATE_C, BLANK_C);
@@ -28,14 +29,16 @@ byte Dali_master::transmitCommand(byte cmd1, byte cmd2, bool &reply, byte &reply
 	byte a = transmitCommand(cmd1, cmd2);
 	reply = false;
 
-	if (bitRead(a, VALIDREPLY_S) == 1) {
+	// If we have a valid reply, wait for the data to be available in the register
+	if (bitRead(b, VALIDREPLY_S) == 1) {
+		while (bitRead(b, REPLY1_S) == 0 && bitRead(b, REPLY2_S) == 0) {
+			b = getStatus();
+		}
+
 		reply1 = 0x00;
 		reply2 = 0x00;
 		reply = true;
-
-		if (bitRead(a, REPLY1_S) == 1 || bitRead(a, REPLY2_S) == 1) {
-			getCommandRegister(reply1, reply2);
-		}
+		getCommandRegister(reply1, reply2);
 	}
 
 	return a;
@@ -77,13 +80,6 @@ byte Dali_master::transmitCommand(byte cmd1, byte cmd2)
 
 		} else {
 
-		}
-	}
-
-	// If we have a valid reply, wait for the data to be available in the register
-	if (bitRead(b, VALIDREPLY_S) == 1) {
-		while (bitRead(b, REPLY1_S) == 0 && bitRead(b, REPLY2_S) == 0) {
-			b = getStatus();
 		}
 	}
 

@@ -47,12 +47,12 @@ public:
   /**
    * Constructor
    */
-  Dali_master(uint8_t _address);
+  Dali_master();
 
   /**
-   * Begin
+   * Begin; set the address of the LED Warrior
    */
-  void begin();
+  void begin(uint8_t _address);
 
   /**
    * Transmit a command and optionally wait for a reply
