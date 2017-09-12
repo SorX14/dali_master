@@ -115,8 +115,6 @@ void initialise()
             delay(100);
             
             dali.flashDevice(choosenId);
-            short_add++;
-            short_add++;
             
             high_longadd = 0xFFFFFF;
             longadd = (low_longadd + high_longadd) / 2;
