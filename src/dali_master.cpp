@@ -101,6 +101,18 @@ byte Dali_master::getStatus()
 	return Wire.read();
 }
 
+void flashDevice(byte deviceId) 
+{
+    const uint8_t delayTime = 50;
+    
+    for (uint8_t i = 0; i <= 3; i++) {
+        transmitCommand(1 + (deviceId << 1), ON_C);
+        delay(delayTime);
+        transmitCommand(1 + (deviceId << 1), OFF_C);
+        delay(delayTime);
+    }
+}
+
 // PRIVATE METHODS
 void Dali_master::clearStatusRegister()
 {

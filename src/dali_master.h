@@ -79,6 +79,11 @@ public:
    */
   void splitAdd(long input, uint8_t &highbyte, uint8_t &middlebyte, uint8_t &lowbyte);
 
+  /**
+   * Flash a device
+   */
+  void flashDevice(byte deviceId);
+
 private:
   uint8_t address;
 
