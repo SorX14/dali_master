@@ -2,8 +2,8 @@
 
 A Particle library for dali_master. Turns your Particle Photon into a DALI Master with the LED Warrior 14 modules available here:
 
-http://shop.codemercs.com/en/led-warrior14-01-module (Powered via 5v) 
-http://shop.codemercs.com/en/led-warrior14-02-module (Powered from DALI bus)
+- http://shop.codemercs.com/en/led-warrior14-01-module (Powered via 5v) 
+- http://shop.codemercs.com/en/led-warrior14-02-module (Powered from DALI bus)
 
 ## About DALI
 
@@ -11,7 +11,8 @@ DALI (Digital Addressable Lighting Interface) is a method of controlling lightin
 
 Up to 64 individual devices can be communicated with one master. Scenes and groups can be defined to group together multiple fixtures. More complicated builds use light and PIR sensors to turn lights on and off.
 
-References: https://en.wikipedia.org/wiki/Digital_Addressable_Lighting_Interface
+References: 
+- https://en.wikipedia.org/wiki/Digital_Addressable_Lighting_Interface
 
 ## This project
 
