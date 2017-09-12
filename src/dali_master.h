@@ -65,6 +65,11 @@ public:
    */
   byte getStatus();
 
+  /**
+   * Get command register
+   */
+  void getCommandRegister(uint8_t &byte1, uint8_t &byte2);
+
 private:
   uint8_t address;
 

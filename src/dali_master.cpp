@@ -7,9 +7,7 @@
  * Constructor.
  */
 Dali_master::Dali_master()
-{
-  
-}
+{}
 
 /**
  * Example method.
@@ -30,9 +28,9 @@ byte Dali_master::transmitCommand(byte cmd1, byte cmd2, bool &reply, byte &reply
 	reply = false;
 
 	// If we have a valid reply, wait for the data to be available in the register
-	if (bitRead(b, VALIDREPLY_S) == 1) {
-		while (bitRead(b, REPLY1_S) == 0 && bitRead(b, REPLY2_S) == 0) {
-			b = getStatus();
+	if (bitRead(a, VALIDREPLY_S) == 1) {
+		while (bitRead(a, REPLY1_S) == 0 && bitRead(a, REPLY2_S) == 0) {
+			a = getStatus();
 		}
 
 		reply1 = 0x00;
