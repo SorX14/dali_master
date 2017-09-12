@@ -18,7 +18,7 @@ References:
 
 The code here is based largely around this original library: https://create.arduino.cc/projecthub/NabiyevTR/simple-dali-controller-506e44 which uses custom circuitry to interface with the DALI bus. I had no interest in designing my own circuit so I purchased a ready-made solution which uses I2C and galvanicly isolates the MCU from the DALI bus.
 
-I've managed to reliably address 2 light features on the bus using the RANDOMISE command which was my main goal.
+I've managed to reliably address 2 light features on the bus using the `RANDOMISE` command which was my main goal.
 
 While the DALI reference is available as a paid for PDF, I used various resources online to understand the commissioning process.
 
@@ -29,12 +29,12 @@ References:
 
 ## Usage
 
-Connect the LED Warrior to your Photon.
+Connect the LED Warrior to your Photon. This library should be usable on an Arduino (see below).
 
-D0 -> SDA
-D1 -> SCL
-GND -> GND
-VIN -> 5V (for 14-01 only)
+- D0 -> SDA
+- D1 -> SCL
+- GND -> GND
+- VIN -> 5V (for 14-01 only)
 
 You'll need pullup resistors for each I2C line (SDA & SCL).
 
@@ -58,6 +58,24 @@ void loop() {
 ```
 
 See the [examples](examples) folder for more details.
+
+## Using an Arduino
+
+I developed this library on a Particle Photon which is a more powerful Arduino compatible device with WiFi and cloud connectivity built-in. 
+
+While I don't have an Arduino handy to test with, the likely change will be in the `.h` file:
+
+```
+// This will load the definition for common Particle variable types
+#include "Particle.h"
+#include "application.h"
+```
+
+Changes to:
+
+```
+#include "Arduino.h"
+```
 
 ## LICENSE
 Copyright 2017 Steve Parker
