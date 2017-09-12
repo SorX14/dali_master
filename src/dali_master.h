@@ -18,6 +18,9 @@
 
 #define BLANK_C             0b00000000 // Easier to type
 
+#define BROADCAST_C         0xFF
+#define BROADCAST_DP        0xFE
+
 // Specifically related to initialisation
 #define RESET_C             0b00100000 // 0x20
 #define TERMINATE_C         0b10100001 // 0xA1
