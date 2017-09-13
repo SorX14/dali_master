@@ -28,6 +28,12 @@ byte Dali_master::transmitCommand(byte cmd1, byte cmd2, bool &reply, byte &reply
 	byte a = transmitCommand(cmd1, cmd2);
 	reply = false;
 
+	// Wait until reply timeframe has passed
+	b = getStatus();
+	while (bitRead(b, REPLYTIMEFRAME_S) == 1) {
+		b = getStatus();
+	}
+
 	// If we have a valid reply, wait for the data to be available in the register
 	if (bitRead(a, VALIDREPLY_S) == 1) {
 		while (bitRead(a, REPLY1_S) == 0 && bitRead(a, REPLY2_S) == 0) {
@@ -63,12 +69,6 @@ byte Dali_master::transmitCommand(byte cmd1, byte cmd2)
 	// Wait until the command has been sent
 	b = getStatus();
 	while (bitRead(b, BUSY_S) == 1) {
-		b = getStatus();
-	}
-
-	// Wait until reply timeframe has passed
-	b = getStatus();
-	while (bitRead(b, REPLYTIMEFRAME_S) == 1) {
 		b = getStatus();
 	}
 
