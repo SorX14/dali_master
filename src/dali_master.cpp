@@ -59,7 +59,7 @@ byte Dali_master::transmitCommand(byte cmd1, byte cmd2)
 	Wire.write(0x01);
 	Wire.write(cmd1);
 	Wire.write(cmd2);
-	Wire.endTransmission(false);
+	Wire.endTransmission();
 
 	// Wait until the command has been sent
 	b = getStatus();
@@ -183,7 +183,7 @@ bool Dali_master::getStatusRaw()
 {
 	Wire.beginTransmission(address);
 	Wire.write(0x00);
-	Wire.endTransmission(false);
+	Wire.endTransmission();
 
 	Wire.requestFrom(address, 1);
 
@@ -194,7 +194,7 @@ bool Dali_master::getCommandRegisterRaw()
 {
 	Wire.beginTransmission(address);
 	Wire.write(0x01);
-	Wire.endTransmission(false);
+	Wire.endTransmission();
 
 	Wire.requestFrom(address, 2);
 
