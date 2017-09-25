@@ -15,12 +15,14 @@ Dali_master::Dali_master()
 void Dali_master::begin(uint8_t _address)
 {
   	address = _address;
+  	Wire.setSpeed(20000);
 	Wire.begin();
 
 	clearStatusRegister();
     transmitCommand(TERMINATE_C, BLANK_C);
     transmitCommand(RESET_C, BLANK_C);
     transmitCommand(RESET_C, BLANK_C);
+    clearStatusRegister();
 }
 
 byte Dali_master::transmitCommand(byte cmd1, byte cmd2, bool &reply, byte &reply1, byte &reply2)
@@ -47,11 +49,11 @@ byte Dali_master::transmitCommand(byte cmd1, byte cmd2)
 {
 	// Make sure the command register is clear before continuing
 	clearStatusRegister();
-	delay(10);
 
 	// Wait until bus is free
 	byte b = getStatus();
 	while (bitRead(b, BUSY_S) == 1) {
+		delay(1);
 		b = getStatus();
 	}
 
@@ -59,11 +61,12 @@ byte Dali_master::transmitCommand(byte cmd1, byte cmd2)
 	Wire.write(0x01);
 	Wire.write(cmd1);
 	Wire.write(cmd2);
-	Wire.endTransmission();
+	Wire.endTransmission(true);
 
 	// Wait until the command has been sent
 	b = getStatus();
 	while (bitRead(b, BUSY_S) == 1) {
+		delay(1);
 		b = getStatus();
 	}
 
@@ -75,10 +78,12 @@ byte Dali_master::transmitCommand(byte cmd1, byte cmd2)
 			Serial.println("OVERRUN");
 		}
 	}
+	delay(5);
 
 	// Wait until reply timeframe has passed
 	b = getStatus();
 	while (bitRead(b, REPLYTIMEFRAME_S) == 1) {
+		delay(10);
 		b = getStatus();
 	}
 
@@ -88,7 +93,9 @@ byte Dali_master::transmitCommand(byte cmd1, byte cmd2)
 void Dali_master::getCommandRegister(uint8_t &byte1, uint8_t &byte2) 
 {
 	// Wait until we have the correct number of bytes
-	while (!getCommandRegisterRaw()) {}
+	while (!getCommandRegisterRaw()) {
+		Serial.print("f");
+	}
 
 	byte1 = Wire.read();
 	byte2 = Wire.read();
@@ -97,7 +104,9 @@ void Dali_master::getCommandRegister(uint8_t &byte1, uint8_t &byte2)
 byte Dali_master::getStatus()
 {
 	// Wait until we have the correct number of bytes
-	while (!getStatusRaw()) {}
+	while (!getStatusRaw()) {
+		Serial.print("e");
+	}
 
 	return Wire.read();
 }
@@ -174,6 +183,10 @@ void Dali_master::clearStatusRegister()
 	byte s = getStatus();
 
 	while (s != 0x00) {
+		if (bitRead(s, BUSERROR_S) == 1) {
+			Serial.println("Bus error! Check DALI connection!");
+			delay(1000);
+		}
 		getCommandRegister(a, b);
 		s = getStatus();
 	}
@@ -181,9 +194,17 @@ void Dali_master::clearStatusRegister()
 
 bool Dali_master::getStatusRaw()
 {
-	Wire.beginTransmission(address);
-	Wire.write(0x00);
-	Wire.endTransmission();
+	byte result = 1;
+	while (result != 1) {
+		Serial.println("getStatusRaw FAILED!!!");
+		Serial.print(result);
+		Serial.println();
+		delay(100);
+		Wire.reset();
+		Wire.beginTransmission(address);
+		Wire.write(0x00);
+		result = Wire.endTransmission(false);	
+	}
 
 	Wire.requestFrom(address, 1);
 
@@ -192,9 +213,17 @@ bool Dali_master::getStatusRaw()
 
 bool Dali_master::getCommandRegisterRaw()
 {
-	Wire.beginTransmission(address);
-	Wire.write(0x01);
-	Wire.endTransmission();
+	byte result = 1;
+	while (result != 1) {
+		Serial.println("getCommandRegisterRaw FAILED!!!");
+		Serial.print(result);
+		Serial.println();
+		delay(100);
+		Wire.reset();
+		Wire.beginTransmission(address);
+		Wire.write(0x01);
+		result = Wire.endTransmission(false);	
+	}
 
 	Wire.requestFrom(address, 2);
 
